@@ -1,0 +1,43 @@
+         AMateria (abstract)
+        /          \
+     Ice            Cure
+
+   ICharacter (interface)      IMateriaSource (interface)
+        |                               |
+    Character                      MateriaSource
+
+1. インターフェースの意味（一般的なOOPの概念）
+
+「どんな操作ができるのか」を定めた契約のこと。
+
+逆に「どう実装するか」は一切書かない。
+
+つまり 仕様書のようなもので、具体的な動作は各クラスに任せる。
+
+「純粋仮想関数だけを持つ抽象クラス」 をインターフェースとして扱います。
+
+
+
+| クラス           | 関数                 | ゲーム内の意味             |
+| ------------- | ------------------ | ------------------- |
+| AMateria      | `clone()`          | マテリアを複製する錬成魔法       |
+| AMateria      | `use()`            | マテリアを発動する（抽象的なコマンド） |
+| Ice/Cure      | `clone()`          | 自分自身をコピー（新しい魔法を作る）  |
+| Ice/Cure      | `use()`            | 実際の魔法を発動（氷弾・回復）     |
+| ICharacter    | `equip()`          | 魔法を装備する             |
+| ICharacter    | `unequip()`        | 魔法を外す（破棄禁止）         |
+| ICharacter    | `use()`            | 装備中の魔法を使う           |
+| Character     | `clearInventory()` | 全装備を片付ける            |
+| Character     | `cloneFrom()`      | 他キャラの装備を複製          |
+| Character     | `dropToFloor()`    | 外した魔法を地面に置く（リーク対策）  |
+| MateriaSource | `learnMateria()`   | 新しいマテリアのレシピを覚える     |
+| MateriaSource | `createMateria()`  | 覚えたマテリアを生成する        |
+
+
+要するに：
+
+🔹 AMateria系は「魔法の性質」
+🔹 Character系は「それを装備・使う人」
+🔹 MateriaSource系は「魔法を作る工房」
+
+そしてこれらをつなぐのが「インターフェース（共通ルール）」。
