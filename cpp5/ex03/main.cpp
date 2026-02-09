@@ -6,7 +6,7 @@
 /*   By: sykawai <sykawai@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:56:56 by sykawai           #+#    #+#             */
-/*   Updated: 2025/12/16 16:01:17 by sykawai          ###   ########.fr       */
+/*   Updated: 2026/02/08 18:22:19 by sykawai          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int main()
 		Intern intern;
 		Bureaucrat executor("Exec", 1);
 
-		AForm *form = intern.makeForm("shrubbery creation", "home");
+		AForm *form = intern.makeForm("robotomy request", "home");
 		if (form)
 		{
 			executor.signForm(*form);

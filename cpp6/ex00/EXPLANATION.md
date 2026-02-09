@@ -8,8 +8,8 @@
 上から順に判定し、最初に一致したものだけが処理されます。
 
 1. char リテラル
-   - `isCharLiteral()` は `'x'` のように長さ3・単一引用符で囲まれた1文字のみ許可
-   - 変換: `char c = literal[1]` -> `printFromDouble((double)c, false)`
+   - `isCharLiteral()` は「表示可能な1文字（数字以外）」のみ許可
+   - 変換: `char c = literal[0]` -> `printFromDouble((double)c, false)`
 2. 疑似値（nan/inf）
    - `-inff`, `+inff`, `nanf`, `-inf`, `+inf`, `nan`
    - 変換: `printPseudo()` で固定文字列を出力（数値変換なし）
@@ -44,7 +44,7 @@
     `setprecision(1)` は残ります（同じ `std::cout` を使うなら影響あり）
 
 ## isCharLiteral() の判定
-`isCharLiteral()` は「表示可能な1文字 + 単一引用符」のみ許可します。
+`isCharLiteral()` は「表示可能な1文字（数字以外）」のみ許可します。
 
-- OK: `'a'`
-- NG: `''`, `'ab'`, `'\n'`
+- OK: `a`
+- NG: `0`, `''`, `'ab'`, `\n`

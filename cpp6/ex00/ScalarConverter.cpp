@@ -29,7 +29,10 @@ ScalarConverter::~ScalarConverter() {}
 
 bool ScalarConverter::isCharLiteral(const std::string &literal)
 {
-	return literal.size() == 3 && literal[0] == '\'' && literal[2] == '\'' && std::isprint(literal[1]);
+	if (literal.size() != 1)
+		return false;
+	unsigned char c = static_cast<unsigned char>(literal[0]);
+	return std::isprint(c) && !std::isdigit(c);
 }
 
 bool ScalarConverter::isIntLiteral(const std::string &literal)
@@ -43,7 +46,7 @@ bool ScalarConverter::isIntLiteral(const std::string &literal)
 		return false;
 	for (; i < literal.size(); ++i)
 	{
-		if (!std::isdigit(literal[i]))
+		if (!std::isdigit(static_cast<unsigned char>(literal[i])))
 			return false;
 	}
 	return true;
@@ -57,6 +60,7 @@ bool ScalarConverter::isFloatLiteral(const std::string &literal)
 		return false;
 	std::string core = literal.substr(0, literal.size() - 1);
 	bool hasDot = false;
+	bool hasDigit = false;
 	std::size_t i = 0;
 	if (core[i] == '+' || core[i] == '-')
 		++i;
@@ -70,10 +74,12 @@ bool ScalarConverter::isFloatLiteral(const std::string &literal)
 				return false;
 			hasDot = true;
 		}
-		else if (!std::isdigit(core[i]))
+		else if (std::isdigit(static_cast<unsigned char>(core[i])))
+			hasDigit = true;
+		else
 			return false;
 	}
-	return hasDot;
+	return hasDot && hasDigit;
 }
 
 bool ScalarConverter::isDoubleLiteral(const std::string &literal)
@@ -81,6 +87,7 @@ bool ScalarConverter::isDoubleLiteral(const std::string &literal)
 	if (literal == "-inf" || literal == "+inf" || literal == "nan")
 		return true;
 	bool hasDot = false;
+	bool hasDigit = false;
 	std::size_t i = 0;
 	if (literal.empty())
 		return false;
@@ -96,10 +103,12 @@ bool ScalarConverter::isDoubleLiteral(const std::string &literal)
 				return false;
 			hasDot = true;
 		}
-		else if (!std::isdigit(literal[i]))
+		else if (std::isdigit(static_cast<unsigned char>(literal[i])))
+			hasDigit = true;
+		else
 			return false;
 	}
-	return hasDot;
+	return hasDot && hasDigit;
 }
 
 bool ScalarConverter::isPseudoFloat(const std::string &literal)
@@ -168,7 +177,7 @@ void ScalarConverter::convert(const std::string &literal)
 {
 	if (isCharLiteral(literal))
 	{
-		char c = literal[1];
+		char c = literal[0];
 		printFromDouble(static_cast<double>(c), false);
 		return;
 	}

@@ -3,14 +3,14 @@
 出力の改行は省略しています。代表例のみ記載。
 
 ## 1. char リテラル
-入力: `'A'`
+入力: `A`
 出力:
 - char: 'A'
 - int: 65
 - float: 65.0f
 - double: 65.0
 
-入力: `' '`
+入力: ` `
 出力:
 - char: ' '
 - int: 32
@@ -106,6 +106,13 @@
 - double: impossible
 
 入力: `'ab'`
+出力:
+- char: impossible
+- int: impossible
+- float: impossible
+- double: impossible
+
+入力: `'A'`
 出力:
 - char: impossible
 - int: impossible
