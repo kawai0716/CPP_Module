@@ -19,6 +19,9 @@ int main(void)
 	for (unsigned int i = 0; i < copy.size(); ++i)
 		std::cout << copy[i] << std::endl;
 
+	std::cout << "original:" << std::endl;
+	std::cout << numbers[0] << std::endl;
+
 	Array<std::string> words(3);
 	words[0] = "hello";
 	words[1] = "template";
