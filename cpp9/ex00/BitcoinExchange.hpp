@@ -22,8 +22,6 @@ private:
 
     static std::string trim(const std::string& s);
     static bool parseDateParts(const std::string& date, int& year, int& month, int& day);
-    static bool isLeapYear(int year);
-    static int  daysInMonth(int year, int month);
 };
 
 #endif

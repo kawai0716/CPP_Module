@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <ctime>
+#include <cstring>
 
 BitcoinExchange::BitcoinExchange() {}
 
@@ -44,24 +46,6 @@ bool BitcoinExchange::parseDateParts(const std::string& date, int& year, int& mo
     return true;
 }
 
-bool BitcoinExchange::isLeapYear(int year) {
-    if (year % 400 == 0) {
-        return true;
-    }
-    if (year % 100 == 0) {
-        return false;
-    }
-    return (year % 4 == 0);
-}
-
-int BitcoinExchange::daysInMonth(int year, int month) {
-    static const int days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    if (month == 2) {
-        return days[1] + (isLeapYear(year) ? 1 : 0);
-    }
-    return days[month - 1];
-}
-
 bool BitcoinExchange::isValidDate(const std::string& date) const {
     int year = 0;
     int month = 0;
@@ -70,11 +54,25 @@ bool BitcoinExchange::isValidDate(const std::string& date) const {
     if (!parseDateParts(date, year, month, day)) {
         return false;
     }
-    if (year <= 0 || month < 1 || month > 12) {
+    if (year <= 0 || month < 1 || month > 12 || day < 1 || day > 31) {
         return false;
     }
-    int dim = daysInMonth(year, month);
-    if (day < 1 || day > dim) {
+
+    std::tm tmDate;
+    std::memset(&tmDate, 0, sizeof(tmDate));
+    tmDate.tm_year = year - 1900;
+    tmDate.tm_mon = month - 1;
+    tmDate.tm_mday = day;
+    tmDate.tm_hour = 12;
+    tmDate.tm_isdst = -1;
+
+    std::time_t normalized = std::mktime(&tmDate);
+    if (normalized == static_cast<std::time_t>(-1)) {
+        return false;
+    }
+    if (tmDate.tm_year != year - 1900
+        || tmDate.tm_mon != month - 1
+        || tmDate.tm_mday != day) {
         return false;
     }
     return true;
